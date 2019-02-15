@@ -37,10 +37,12 @@ namespace RecipeApi
                 c.Version = "v1";
                 c.Description = "The Recipe API documentation description.";
             }); //for OpenAPI 3.0 else AddSwaggerDocument();
-        }
+
+            services.AddCors(options => options.AddPolicy("AllowAllOrigins", builder => builder.AllowAnyOrigin()));
+            }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, RecipeDataInitializer recipeDataInitializer)
+            public void Configure(IApplicationBuilder app, IHostingEnvironment env, RecipeDataInitializer recipeDataInitializer)
         {
             if (env.IsDevelopment())
             {
