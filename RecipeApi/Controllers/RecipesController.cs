@@ -41,5 +41,18 @@ namespace RecipeApi.Controllers
 
             return CreatedAtAction(nameof(GetRecipe),  new { id = recipe.Id }, recipe);
         }
+
+        // PUT: api/Recipes/5
+        [HttpPut("{id}")]
+        public IActionResult PutRecipe(int id, Recipe recipe)
+        {
+            if (id != recipe.Id)
+            {
+                return BadRequest();
+            }
+            _recipeRepository.Update(recipe);
+            _recipeRepository.SaveChanges();
+            return NoContent();
+        }
     }
 }
