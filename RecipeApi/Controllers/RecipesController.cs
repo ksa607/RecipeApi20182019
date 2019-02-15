@@ -54,5 +54,19 @@ namespace RecipeApi.Controllers
             _recipeRepository.SaveChanges();
             return NoContent();
         }
+
+        // DELETE: api/Recipes/5
+        [HttpDelete("{id}")]
+        public ActionResult<Recipe> DeleteRecipe(int id)
+        {
+            Recipe recipe = _recipeRepository.GetBy(id);
+            if (recipe == null)
+            {
+                return NotFound();
+            }
+            _recipeRepository.Delete(recipe);
+            _recipeRepository.SaveChanges();
+            return recipe;
+        }
     }
 }
