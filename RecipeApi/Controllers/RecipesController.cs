@@ -23,13 +23,23 @@ namespace RecipeApi.Controllers
             return _recipeRepository.GetAll().OrderBy(r => r.Name);
         }
 
-       // GET: api/Recipes
+       // GET: api/Recipes/5
         [HttpGet("{id}")]
         public ActionResult<Recipe> GetRecipe(int id)
         {
             Recipe recipe = _recipeRepository.GetBy(id);
             if (recipe == null) return NotFound();
             return recipe;
+        }
+
+        // POST: api/Recipes
+        [HttpPost]
+        public ActionResult<Recipe> PostRecipe(Recipe recipe)
+        {
+            _recipeRepository.Add(recipe);
+            _recipeRepository.SaveChanges();
+
+            return CreatedAtAction(nameof(GetRecipe),  new { id = recipe.Id }, recipe);
         }
     }
 }
