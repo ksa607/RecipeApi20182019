@@ -30,7 +30,13 @@ namespace RecipeApi
             services.AddScoped<RecipeDataInitializer>();
             services.AddScoped<IRecipeRepository, RecipeRepository>();
 
-            services.AddOpenApiDocument(); //for OpenAPI 3.0 else AddSwaggerDocument();
+            services.AddOpenApiDocument(c =>
+            {
+                c.DocumentName = "apidocs";
+                c.Title = "Recipe API";
+                c.Version = "v1";
+                c.Description = "The Recipe API documentation description.";
+            }); //for OpenAPI 3.0 else AddSwaggerDocument();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
