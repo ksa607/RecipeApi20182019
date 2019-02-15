@@ -19,7 +19,6 @@ namespace RecipeApi.Data
                 //seeding the database with recipes, see DBContext               
             }
         }
-
-             }
+    }
 }
 
