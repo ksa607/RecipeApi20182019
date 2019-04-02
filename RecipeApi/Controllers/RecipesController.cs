@@ -18,9 +18,9 @@ namespace RecipeApi.Controllers
         private readonly IRecipeRepository _recipeRepository;
         private readonly ICustomerRepository _customerRepository;
 
-        public RecipesController(IRecipeRepository context, ICustomerRepository customerRepository)
+        public RecipesController(IRecipeRepository recipeRepository, ICustomerRepository customerRepository)
         {
-            _recipeRepository = context;
+            _recipeRepository = recipeRepository;
             _customerRepository = customerRepository;
         }
 
