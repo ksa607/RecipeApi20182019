@@ -55,7 +55,7 @@ namespace RecipeApi.Controllers
                      return Created("", token); //returns only the token                    
                 }
             }
-                return BadRequest();
+            return BadRequest();
         }
 
         /// <summary>
@@ -79,6 +79,19 @@ namespace RecipeApi.Controllers
                 return Created("", token);
             }
             return BadRequest();
+        }
+
+        /// <summary>
+        /// Checks if an email is available as username
+        /// </summary>
+        /// <returns>true if the email is not registered yet</returns>
+        /// <param name="email">Email.</param>/
+        [AllowAnonymous]
+        [HttpGet("checkusername")]
+        public async Task<ActionResult<Boolean>> CheckAvailableUserName(string email)
+        {
+            var user = await _userManager.FindByNameAsync(email);
+            return user == null;
         }
 
         private String GetToken(IdentityUser user)
