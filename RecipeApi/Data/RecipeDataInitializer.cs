@@ -27,7 +27,7 @@ namespace RecipeApi.Data
                 await CreateUser(customer.Email, "P@ssword1111");
                 Customer student = new Customer { Email = "student@hogent.be", FirstName = "Student", LastName = "Hogent" };
                 _dbContext.Customers.Add(student);
-                student.AddFavoriteRecipe(_dbContext.Recipes.First());
+                student.RateRecipe(_dbContext.Recipes.First(), 4);
                 await CreateUser(student.Email, "P@ssword1111");
                 _dbContext.SaveChanges();
             }

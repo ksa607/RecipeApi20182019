@@ -31,9 +31,11 @@ namespace RecipeApi.Controllers
         /// <returns>array of recipes</returns>
         [HttpGet]
         [AllowAnonymous]
-        public IEnumerable<Recipe> GetRecipes()
+        public IEnumerable<Recipe> GetRecipes(string name = null, string chef = null, string ingredientName = null)
         {
-            return _recipeRepository.GetAll().OrderBy(r => r.Name);
+            if (string.IsNullOrEmpty(name) && string.IsNullOrEmpty(chef) && string.IsNullOrEmpty(ingredientName))
+                return _recipeRepository.GetAll();
+            return _recipeRepository.GetBy(name, chef, ingredientName);
         }
 
         // GET: api/Recipes/5
@@ -51,13 +53,37 @@ namespace RecipeApi.Controllers
         }
 
         /// <summary>
-        /// Get favorite recipes of current user
+        /// Get ratings of recipes with the provided id's by current user
         /// </summary>
-        [HttpGet("Favorites")]
-        public IEnumerable<Recipe> GetFavorites()
+        [HttpGet("Rated")]
+        public IEnumerable<RatedRecipeDTO> GetRatedRecipes([FromQuery(Name = "id")] int[] recipeIds)
         {
             Customer customer = _customerRepository.GetBy(User.Identity.Name);
-            return customer.FavoriteRecipes;
+            List<RatedRecipeDTO> ratedRecipes = new List<RatedRecipeDTO>();
+            foreach (var ratedRecipe in customer.RatedRecipes.Where(p => recipeIds.Contains(p.Key.Id)))
+            {
+                ratedRecipes.Add(new RatedRecipeDTO(ratedRecipe.Key, ratedRecipe.Value));
+            }
+            return ratedRecipes;
+        }
+
+        /// <summary>
+        /// Rate a recipe with a certain id
+        /// </summary>
+        /// <param name="id">id of the recipe being rated</param>
+        /// <param name="rating">rating of the recipe</param>
+        [HttpPut("Rate/{id}/{rating}")]
+        public ActionResult<RatedRecipeDTO> RateRecipe(int id, int rating)
+        {
+            Customer customer = _customerRepository.GetBy(User.Identity.Name);
+            Recipe recipe = _recipeRepository.GetBy(id);
+            if (recipe == null)
+            {
+                return NotFound();
+            }
+            customer.RateRecipe(recipe, rating);
+            _customerRepository.SaveChanges();
+            return new RatedRecipeDTO(recipe, rating);
         }
 
         // POST: api/Recipes

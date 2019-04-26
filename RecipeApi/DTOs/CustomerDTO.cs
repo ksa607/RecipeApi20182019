@@ -11,7 +11,7 @@ namespace RecipeApi.DTOs
 
         public string Email { get; set; }
 
-        public IEnumerable<Recipe> Recipes { get; set; }
+        public IEnumerable<KeyValuePair<Recipe, int>> Recipes { get; set; }
 
         public CustomerDTO() { }
 
@@ -20,7 +20,7 @@ namespace RecipeApi.DTOs
             FirstName = customer.FirstName;
             LastName = customer.LastName;
             Email = customer.Email;
-            Recipes = customer.FavoriteRecipes;
+            Recipes = customer.RatedRecipes;
         }
     }
 }

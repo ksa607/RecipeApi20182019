@@ -29,15 +29,15 @@ namespace RecipeApi.Data
             builder.Entity<Customer>().Property(c => c.LastName).IsRequired().HasMaxLength(50);
             builder.Entity<Customer>().Property(c => c.FirstName).IsRequired().HasMaxLength(50);
             builder.Entity<Customer>().Property(c => c.Email).IsRequired().HasMaxLength(100);
-            builder.Entity<Customer>().Ignore(c => c.FavoriteRecipes);
+            builder.Entity<Customer>().Ignore(c => c.RatedRecipes);
 
-            builder.Entity<CustomerFavorite>().HasKey(f => new { f.CustomerId, f.RecipeId });
-            builder.Entity<CustomerFavorite>().HasOne(f => f.Customer).WithMany(u => u.Favorites).HasForeignKey(f => f.CustomerId);
-            builder.Entity<CustomerFavorite>().HasOne(f => f.Recipe).WithMany().HasForeignKey(f => f.RecipeId);
+            builder.Entity<CustomerRating>().HasKey(f => new { f.CustomerId, f.RecipeId });
+            builder.Entity<CustomerRating>().HasOne(f => f.Customer).WithMany(u => u.Ratings).HasForeignKey(f => f.CustomerId);
+            builder.Entity<CustomerRating>().HasOne(f => f.Recipe).WithMany().HasForeignKey(f => f.RecipeId);
 
             //Another way to seed the database
             builder.Entity<Recipe>().HasData(
-                new Recipe { Id = 1, Name = "Spaghetti", Created = DateTime.Now },
+                new Recipe { Id = 1, Name = "Spaghetti", Created = DateTime.Now, Chef="Piet" },
                 new Recipe { Id = 2, Name = "Tomato soup", Created = DateTime.Now }
   );
 

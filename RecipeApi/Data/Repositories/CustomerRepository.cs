@@ -17,7 +17,7 @@ namespace RecipeApi.Data.Repositories
 
         public Customer GetBy(string email)
         {
-            return _customers.Include(c => c.Favorites).ThenInclude(f=>f.Recipe).ThenInclude(r=>r.Ingredients).SingleOrDefault(c=>c.Email== email);
+            return _customers.Include(c => c.Ratings).ThenInclude(f=>f.Recipe).ThenInclude(r=>r.Ingredients).SingleOrDefault(c=>c.Email== email);
         }
 
         public void Add(Customer  customer)
